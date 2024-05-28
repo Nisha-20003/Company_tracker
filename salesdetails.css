@@ -1,0 +1,222 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #C0C0C0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #62704ba2;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 50px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.input-section {
+    background-color: #C0C0C0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-section input, .input-section button {
+    padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-section input {
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.products {
+    background-color: #C0C0C0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.products h2 {
+    margin-bottom: 10px;
+}
+
+.products ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.products li {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.products li:last-child {
+    margin-bottom: 0;
+}
+
+.products li:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.summary {
+    background-color: #C0C0C0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.summary h2 {
+    margin-bottom: 10px;
+}
+
+.summary p {
+    margin-bottom: 10px;
+}
+
+.summary button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.summary button:hover {
+    background-color: #218838;
+}
+/* Hide profit cells by default */
+td.profit {
+    display: none;
+}
+
+footer {
+    background-color: #62704ba2;
+    color:  black;
+    text-align: center;
+    padding: 10px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Show profit cells for printing */
+@media print {
+    td.profit {
+        display: table-cell;
+    }
+}
+/* Responsive CSS */
+@media only screen and (max-width: 600px) {
+    .input-section input, .input-section button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+   footer p {
+        font-size: 12px;
+    }
+}
+/* Media query for iPads */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    /* Input section styles */
+    .input-section {
+        text-align: left;
+    }
+
+    /* Product list styles */
+    .products {
+        display: block;
+    }
+
+    .product-details {
+        width: 100%;
+    }
+  footer {
+        padding: 8px;
+    }
+
+    footer p {
+        font-size: 13px;
+    }
+}
+/* Media query for laptops */
+@media screen and (min-width: 1024px) {
+    /* Container styles */
+    .container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    /* Input section styles */
+    .input-section {
+        text-align: left;
+    }
+
+    /* Product list styles */
+    .products {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .product-details {
+        width: 48%;
+    }
+   footer {
+        padding: 10px;
+    }
+
+    footer p {
+        font-size: 14px;
+    } 
+}  
