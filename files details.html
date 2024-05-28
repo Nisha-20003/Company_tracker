@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Account</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            font-size: 150%;
+            font-weight: 1000;
+        }
+        #savePdfButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+           border-radius: 15px;
+            cursor: pointer;
+        }
+  @media only screen and (max-width: 600px) {
+    table {
+        font-size: 80%; /* Decrease font size for smaller screens */
+    }
+    th, td {
+        padding: 6px; /* Decrease padding for smaller screens */
+    }
+    h1, h2 {
+        font-size: 24px; /* Decrease heading font size for smaller screens */
+    }
+    p {
+        font-size: 120%; /* Decrease paragraph font size for smaller screens */
+    }
+} 
+  @media only screen and (min-width: 768px) {
+    table {
+        font-size: 100%; /* Reset font size to default for larger screens */
+    }
+    th, td {
+        padding: 10px; /* Increase padding for larger screens */
+    }
+    h1, h2 {
+        font-size: 36px; /* Increase heading font size for larger screens */
+    }
+    p {
+        font-size: 150%; /* Increase paragraph font size for larger screens */
+    }
+}
+  @media only screen and (max-width: 414px) {
+    table {
+        font-size: 80%; /* Decrease font size for smaller iPhone screens */
+    }
+    th, td {
+        padding: 6px; /* Decrease padding for smaller iPhone screens */
+    }
+    h1, h2 {
+        font-size: 24px; /* Decrease heading font size for smaller iPhone screens */
+    }
+    p {
+        font-size: 120%; /* Decrease paragraph font size for smaller iPhone screens */
+    }
+}
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    table {
+        font-size: 90%; /* Decrease font size for iPad screens */
+    }
+    th, td {
+        padding: 8px; /* Adjust padding for iPad screens */
+    }
+    h1, h2 {
+        font-size: 32px; /* Adjust heading font size for iPad screens */
+    }
+    p {
+        font-size: 130%; /* Adjust paragraph font size for iPad screens */
+    }
+}
+    </style>
+    <!-- Include html2pdf.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div id="pdfContent">
+        <h1>Company Tracker Account</h1>
+        <h2>Products</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Purchase Date</th>
+                    <th>Quantity</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>Profit</th>
+                </tr>
+            </thead>
+            <tbody id="productList"></tbody>
+        </table>
+        <p id="summaryMessage"></p>
+    </div>
+    <button id="savePdfButton">Save as PDF</button>
+
+    <script>
+        const products = JSON.parse(localStorage.getItem('products') || '[]');
+
+        function calculateProfit(product) {
+            return (product.sellingPrice - product.costPrice) * product.quantity;
+        }
+
+        function populateProductsSummary() {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+
+            let totalProfit = 0;
+            let totalLoss = 0;
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                const profit = calculateProfit(product);
+                totalProfit += profit > 0 ? profit : 0;
+                totalLoss += profit < 0 ? -profit : 0;
+
+                row.innerHTML = `
+                    <td>${product.item}</td>
+                    <td>${product.purchaseDate}</td>
+                    <td>${product.quantity}</td>
+                    <td>$${product.costPrice.toFixed(2)}</td>
+                    <td>$${product.sellingPrice.toFixed(2)}</td>
+                    <td>$${profit.toFixed(2)}</td>
+                `;
+                productList.appendChild(row);
+            });
+
+            const totalProfitRow = document.createElement('tr');
+            totalProfitRow.innerHTML = `<td colspan="5">Total Profit</td><td>$${totalProfit.toFixed(2)}</td>`;
+            productList.appendChild(totalProfitRow);
+
+            const totalLossRow = document.createElement('tr');
+            totalLossRow.innerHTML = `<td colspan="5">Total Loss</td><td>$${totalLoss.toFixed(2)}</td>`;
+            productList.appendChild(totalLossRow);
+
+            const totalProfitLoss = totalProfit - totalLoss;
+            const message = totalProfitLoss >= 0 ? 
+                `Your profit is $${totalProfitLoss.toFixed(2)}` : 
+                `Your loss is $${Math.abs(totalProfitLoss).toFixed(2)}`;
+
+            document.getElementById('summaryMessage').textContent = message;
+        }
+
+        window.onload = function() {
+            populateProductsSummary();
+        };
+
+        document.getElementById('savePdfButton').addEventListener('click', () => {
+            const element = document.getElementById('pdfContent');
+            const opt = {
+                margin:       0.5,
+                filename:     'company_account.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(element).set(opt).save();
+        });
+    </script>
+</body>
+</html> 

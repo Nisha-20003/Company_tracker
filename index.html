@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Tracker</title>
+    <link rel="stylesheet" href="salesdetails.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script> 
+</head>
+<body>
+    <div class="container"> 
+        <div class="header">
+            <img src="1.png" alt="Nisha logo"><!-- Add your company logo text here and image here-->
+            <h1 id="nisha">Nisha Account Details</h1><!-- Add Your company name -->
+        </div>
+        <div class="input-section">
+            <h2 id="Details">Enter Item Details</h2>
+           Item Name:  <input type="text" id="item">
+         Purchase Date: <input type="date" id="purchaseDate" onchange="handleDateInput()">
+          Quantity:  <input type="number" id="quantity">
+            Cost Price:<input type="number" id="costPrice" >
+            Selling Price: <input type="number" id="sellingPrice">
+            <button onclick="addItem()">Add Item</button>
+        </div>
+        <div class="products">
+            <h2>Products</h2>
+            <ul id="productList"></ul>
+        </div>
+        <div class="summary">
+            <h2>Summary</h2>
+       <p id="profitLoss">Profit/Loss: $0</p>
+            <p id="yearSummary">Yearly Profit: $0</p>
+            <p id="monthSummary">Monthly Profit: $0</p>
+            <p id="weekSummary">Weekly Profit: $0</p>
+            <p id="daySummary">Daily Profit: $0</p>
+          <a href="files details.html"><button>Account Summary Details</button></a>
+          <button onclick="saveProducts()">Save</button>
+        </div>
+    </div>
+    <!-- Footer with copyright notice -->
+    <footer>
+        <p>&copy; 2024 Nisha. All rights reserved. Unauthorized reproduction, distribution, or modification of this code is prohibited.</p> 
+    </footer>
+    <script src="salesdetails.js"></script>
+</body>
+</html>
