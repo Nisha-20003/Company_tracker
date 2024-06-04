@@ -24,78 +24,70 @@
             font-size: 150%;
             font-weight: 1000;
         }
-        .profit-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 15px;
-            cursor: pointer;
-        }
         #savePdfButton {
             display: block;
             margin: 20px auto;
             padding: 10px 20px;
             font-size: 16px;
-            border-radius: 15px;
+           border-radius: 15px;
             cursor: pointer;
         }
-        @media only screen and (max-width: 600px) {
-            table {
-                font-size: 80%;
-            }
-            th, td {
-                padding: 6px;
-            }
-            h1, h2 {
-                font-size: 24px;
-            }
-            p {
-                font-size: 120%;
-            }
-        } 
-        @media only screen and (min-width: 768px) {
-            table {
-                font-size: 100%;
-            }
-            th, td {
-                padding: 10px;
-            }
-            h1, h2 {
-                font-size: 36px;
-            }
-            p {
-                font-size: 150%;
-            }
-        }
-        @media only screen and (max-width: 414px) {
-            table {
-                font-size: 80%;
-            }
-            th, td {
-                padding: 6px;
-            }
-            h1, h2 {
-                font-size: 24px;
-            }
-            p {
-                font-size: 120%;
-            }
-        }
-        @media only screen and (min-width: 768px) and (max-width: 1024px) {
-            table {
-                font-size: 90%;
-            }
-            th, td {
-                padding: 8px;
-            }
-            h1, h2 {
-                font-size: 32px;
-            }
-            p {
-                font-size: 130%;
-            }
-        }
+  @media only screen and (max-width: 600px) {
+    table {
+        font-size: 80%; /* Decrease font size for smaller screens */
+    }
+    th, td {
+        padding: 6px; /* Decrease padding for smaller screens */
+    }
+    h1, h2 {
+        font-size: 24px; /* Decrease heading font size for smaller screens */
+    }
+    p {
+        font-size: 120%; /* Decrease paragraph font size for smaller screens */
+    }
+} 
+  @media only screen and (min-width: 768px) {
+    table {
+        font-size: 100%; /* Reset font size to default for larger screens */
+    }
+    th, td {
+        padding: 10px; /* Increase padding for larger screens */
+    }
+    h1, h2 {
+        font-size: 36px; /* Increase heading font size for larger screens */
+    }
+    p {
+        font-size: 150%; /* Increase paragraph font size for larger screens */
+    }
+}
+  @media only screen and (max-width: 414px) {
+    table {
+        font-size: 80%; /* Decrease font size for smaller iPhone screens */
+    }
+    th, td {
+        padding: 6px; /* Decrease padding for smaller iPhone screens */
+    }
+    h1, h2 {
+        font-size: 24px; /* Decrease heading font size for smaller iPhone screens */
+    }
+    p {
+        font-size: 120%; /* Decrease paragraph font size for smaller iPhone screens */
+    }
+}
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    table {
+        font-size: 90%; /* Decrease font size for iPad screens */
+    }
+    th, td {
+        padding: 8px; /* Adjust padding for iPad screens */
+    }
+    h1, h2 {
+        font-size: 32px; /* Adjust heading font size for iPad screens */
+    }
+    p {
+        font-size: 130%; /* Adjust paragraph font size for iPad screens */
+    }
+}
     </style>
     <!-- Include html2pdf.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
@@ -117,13 +109,8 @@
             </thead>
             <tbody id="productList"></tbody>
         </table>
-        <div id="summaryMessages"></div>
+        <p id="summaryMessage"></p>
     </div>
-    <button id="totalProfitButton" class="profit-button">Total Profit</button>
-    <button id="dailyProfitButton" class="profit-button">Daily Profit</button>
-    <button id="weeklyProfitButton" class="profit-button">Weekly Profit</button>
-    <button id="monthlyProfitButton" class="profit-button">Monthly Profit</button>
-    <button id="yearlyProfitButton" class="profit-button">Yearly Profit</button>
     <button id="savePdfButton">Save as PDF</button>
     <script>
         const products = JSON.parse(localStorage.getItem('products') || '[]');
@@ -163,89 +150,18 @@
             const totalLossRow = document.createElement('tr');
             totalLossRow.innerHTML = `<td colspan="5">Total Loss</td><td>$${totalLoss.toFixed(2)}</td>`;
             productList.appendChild(totalLossRow);
-        }
-
-        function toggleSummaryMessage(period) {
-            const existingMessage = document.getElementById(`${period}Message`);
-            if (existingMessage) {
-                existingMessage.remove();
-                return;
-            }
-
-            const now = new Date();
-            let filteredProducts = [];
-
-            products.forEach(product => {
-                const purchaseDate = new Date(product.purchaseDate);
-                switch (period) {
-                    case 'daily':
-                        if (purchaseDate.toDateString() === now.toDateString()) {
-                            filteredProducts.push(product);
-                        }
-                        break;
-                    case 'weekly':
-                        const oneWeekAgo = new Date();
-                        oneWeekAgo.setDate(now.getDate() - 7);
-                        if (purchaseDate >= oneWeekAgo && purchaseDate <= now) {
-                            filteredProducts.push(product);
-                        }
-                        break;
-                    case 'monthly':
-                        if (purchaseDate.getMonth() === now.getMonth() && purchaseDate.getFullYear() === now.getFullYear()) {
-                            filteredProducts.push(product);
-                        }
-                        break;
-                    case 'yearly':
-                        if (purchaseDate.getFullYear() === now.getFullYear()) {
-                            filteredProducts.push(product);
-                        }
-                        break;
-                    case 'total':
-                        filteredProducts.push(product);
-                        break;
-                }
-            });
-
-            let totalProfit = 0;
-            let totalLoss = 0;
-
-            filteredProducts.forEach(product => {
-                const profit = calculateProfit(product);
-                totalProfit += profit > 0 ? profit : 0;
-                totalLoss += profit < 0 ? -profit : 0;
-            });
 
             const totalProfitLoss = totalProfit - totalLoss;
             const message = totalProfitLoss >= 0 ? 
-                `Your ${period} profit is $${totalProfitLoss.toFixed(2)}` : 
-                `Your ${period} loss is $${Math.abs(totalProfitLoss).toFixed(2)}`;
+                `Your profit is $${totalProfitLoss.toFixed(2)}` : 
+                `Your loss is $${Math.abs(totalProfitLoss).toFixed(2)}`;
 
-            const summaryMessages = document.getElementById('summaryMessages');
-            const newMessage = document.createElement('p');
-            newMessage.id = `${period}Message`;
-            newMessage.textContent = message;
-            summaryMessages.appendChild(newMessage);
+            document.getElementById('summaryMessage').textContent = message;
         }
 
         window.onload = function() {
             populateProductsSummary();
         };
-
-        document.getElementById('totalProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('total');
-        });
-        document.getElementById('dailyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('daily');
-        });
-        document.getElementById('weeklyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('weekly');
-        });
-        document.getElementById('monthlyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('monthly');
-        });
-        document.getElementById('yearlyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('yearly');
-        });
 
         document.getElementById('savePdfButton').addEventListener('click', () => {
             const element = document.getElementById('pdfContent');
@@ -256,11 +172,8 @@
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
-            document.querySelectorAll('.profit-button').forEach(button => button.style.display = 'none');
-            html2pdf().from(element).set(opt).save().finally(() => {
-                document.querySelectorAll('.profit-button').forEach(button => button.style.display = 'block');
-            });
+            html2pdf().from(element).set(opt).save();
         });
     </script>
 </body>
-</html>
+</html>  
