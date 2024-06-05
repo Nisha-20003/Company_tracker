@@ -132,14 +132,10 @@ button:hover {
 .summary button:hover {
     background-color: #218838;
 }
-/* Hide profit cells by default */
-td.profit {
-    display: none;
-}
 
 footer {
     background-color: #62704ba2;
-    color:  black;
+    color: black;
     text-align: center;
     padding: 10px;
 }
@@ -149,31 +145,29 @@ footer p {
     font-size: 14px;
 }
 
-/* Show profit cells for printing */
-@media print {
-    td.profit {
-        display: table-cell;
-    }
-}
-/* Responsive CSS */
 @media only screen and (max-width: 600px) {
-    .input-section input, .input-section button {
+    .input-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-section input,
+    .input-section button {
         width: 100%;
         margin-right: 0;
         margin-bottom: 10px;
     }
-   footer p {
+
+    footer p {
         font-size: 12px;
     }
 }
-/* Media query for iPads */
+
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-    /* Input section styles */
     .input-section {
         text-align: left;
     }
 
-    /* Product list styles */
     .products {
         display: block;
     }
@@ -181,7 +175,8 @@ footer p {
     .product-details {
         width: 100%;
     }
-  footer {
+
+    footer {
         padding: 8px;
     }
 
@@ -189,20 +184,17 @@ footer p {
         font-size: 13px;
     }
 }
-/* Media query for laptops */
+
 @media screen and (min-width: 1024px) {
-    /* Container styles */
     .container {
         width: 80%;
         margin: 0 auto;
     }
 
-    /* Input section styles */
     .input-section {
         text-align: left;
     }
 
-    /* Product list styles */
     .products {
         display: flex;
         flex-wrap: wrap;
@@ -212,11 +204,64 @@ footer p {
     .product-details {
         width: 48%;
     }
-   footer {
+
+    footer {
         padding: 10px;
     }
 
     footer p {
+        font-size: 14px
+      }
+}
+
+/* Media query for iPhone X and below */
+@media only screen and (max-width: 375px) {
+    .input-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-section input,
+    .input-section button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .products ul {
+        padding-left: 0;
+    }
+
+    footer p {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .header img {
+        max-width: 80px;
+    }
+
+    .input-section input,
+    .input-section button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .summary p,
+    .summary button {
         font-size: 14px;
-    } 
-}  
+    }
+
+    footer p {
+        font-size: 11px;
+    }
+}
