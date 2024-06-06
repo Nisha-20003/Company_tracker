@@ -1,10 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Company Account</title>
     <style>
-body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -33,7 +33,7 @@ body {
             text-align: center;
             margin: 20px 0;
         }
-        .profit-button {
+        .profit-button, .sales-button {
             display: inline-block;
             margin: 10px;
             padding: 10px 20px;
@@ -45,7 +45,7 @@ body {
             border: none;
             transition: background-color 0.3s ease;
         }
-        .profit-button:hover {
+        .profit-button:hover, .sales-button:hover {
             background-color: #45a049;
         }
         #savePdfButton {
@@ -76,7 +76,7 @@ body {
             p {
                 font-size: 120%;
             }
-            .profit-button, #savePdfButton {
+            .profit-button, .sales-button, #savePdfButton {
                 font-size: 14px;
                 padding: 8px 16px;
             }
@@ -136,6 +136,13 @@ body {
         <button id="monthlyProfitButton" class="profit-button">Monthly Profit</button>
         <button id="yearlyProfitButton" class="profit-button">Yearly Profit</button>
     </div>
+    <div class="button-container">
+        <button id="totalSalesButton" class="sales-button">Total Sales</button>
+        <button id="dailySalesButton" class="sales-button">Daily Sales</button>
+        <button id="weeklySalesButton" class="sales-button">Weekly Sales</button>
+        <button id="monthlySalesButton" class="sales-button">Monthly Sales</button>
+        <button id="yearlySalesButton" class="sales-button">Yearly Sales</button>
+    </div>
     <div id="pdfContent">
       <div class="Company">
         <h2>Products Account Details</h2>
@@ -155,7 +162,7 @@ body {
         </table>
         <div id="summaryMessages"></div>
     </div>
-    <button id="savePdfButton" style="display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; border-radius: 15px; cursor: pointer;">Save as PDF</button>
+    <button id="savePdfButton">Save as PDF</button>
     <script>
         const products = JSON.parse(localStorage.getItem('products') || '[]');
 
@@ -163,14 +170,14 @@ body {
             return (product.sellingPrice - product.costPrice) * product.quantity;
         }
 
-        function populateProductsSummary() {
+        function populateProductsSummary(filteredProducts = products) {
             const productList = document.getElementById('productList');
             productList.innerHTML = '';
 
             let totalProfit = 0;
             let totalLoss = 0;
 
-            products.forEach(product => {
+            filteredProducts.forEach(product => {
                 const row = document.createElement('tr');
                 const profit = calculateProfit(product);
                 totalProfit += profit > 0 ? profit : 0;
@@ -240,7 +247,8 @@ body {
             let totalProfit = 0;
             let totalLoss = 0;
 
-            filteredProducts.forEach(product => {const profit = calculateProfit(product);
+            filteredProducts.forEach(product => {
+                const profit = calculateProfit(product);
                 totalProfit += profit > 0 ? profit : 0;
                 totalLoss += profit < 0 ? -profit : 0;
             });
@@ -257,8 +265,46 @@ body {
             summaryMessages.appendChild(newMessage);
         }
 
+        function filterSales(period) {
+            const now = new Date();
+            let filteredProducts = [];
+
+            products.forEach(product => {
+                const purchaseDate = new Date(product.purchaseDate);
+                switch (period) {
+                    case 'Daily':
+                        if (purchaseDate.toDateString() === now.toDateString()) {
+                            filteredProducts.push(product);
+                        }
+                        break;
+                    case 'Weekly':
+                        const oneWeekAgo  = new Date();
+                        oneWeekAgo.setDate(now.getDate() - 7);
+                        if (purchaseDate >= oneWeekAgo && purchaseDate <= now) {
+                            filteredProducts.push(product);
+                        }
+                        break;
+                    case 'Monthly':
+                        if (purchaseDate.getMonth() === now.getMonth() && purchaseDate.getFullYear() === now.getFullYear()) {
+                            filteredProducts.push(product);
+                        }
+                        break;
+                    case 'Yearly':
+                        if (purchaseDate.getFullYear() === now.getFullYear()) {
+                            filteredProducts.push(product);
+                        }
+                        break;
+                    default:
+                        filteredProducts.push(product);
+                        break;
+                }
+            });
+
+            populateProductsSummary(filteredProducts);
+        }
+
         window.onload = function() {
-            populateProductsSummary();
+            filterSales('Total');
         };
 
         document.getElementById('totalProfitButton').addEventListener('click', () => {
@@ -276,32 +322,42 @@ body {
         document.getElementById('yearlyProfitButton').addEventListener('click', () => {
             toggleSummaryMessage('Yearly');
         });
- document.getElementById('savePdfButton').addEventListener('click', () => {
-    const element = document.getElementById('pdfContent');
-    const opt = {
-        margin: 0.5,
-        filename: 'company_account.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-        html2pdf: {
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-            margin: 0.5,
-            filename: 'company_account.pdf',
-            pagebreak: { mode: 'avoid-all', before: '#pdfContent' }
-        }
-    };
 
-    // Show buttons during PDF generation
-    const buttonsToShow = document.querySelectorAll('.profit-button');
-    buttonsToShow.forEach(button => button.style.display = 'inline-block');
+        document.getElementById('totalSalesButton').addEventListener('click', () => {
+            filterSales('Total');
+        });
+        document.getElementById('dailySalesButton').addEventListener('click', () => {
+            filterSales('Daily');
+        });
+        document.getElementById('weeklySalesButton').addEventListener('click', () => {
+            filterSales('Weekly');
+        });
+        document.getElementById('monthlySalesButton').addEventListener('click', () => {
+            filterSales('Monthly');
+        });
+        document.getElementById('yearlySalesButton').addEventListener('click', () => {
+            filterSales('Yearly');
+        });
 
-    html2pdf().from(element).set(opt).save().finally(() => {
-        // Restore original display for buttons after PDF generation
-        buttonsToShow.forEach(button => button.style.display = 'inline-block');
-    });
-});
+        document.getElementById('savePdfButton').addEventListener('click', () => {
+            const element = document.getElementById('pdfContent');
+            const opt = {
+                margin: 0.5,
+                filename: 'company_account.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                html2pdf: {
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    margin: 0.5,
+                    filename: 'company_account.pdf',
+                    pagebreak: { mode: 'avoid-all', before: '#pdfContent' }
+                }
+            };
+
+            html2pdf().from(element).set(opt).save();
+        });
     </script>
 </body>
-</html> 
+</html>
