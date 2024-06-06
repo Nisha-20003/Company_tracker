@@ -247,8 +247,8 @@ body {
 
             const totalProfitLoss = totalProfit - totalLoss;
             const message = totalProfitLoss >= 0 ? 
-                `Your ${period} profit is $${totalProfitLoss.toFixed(2)}` : 
-                `Your ${period} loss is $${Math.abs(totalProfitLoss).toFixed(2)}`;
+                `${period} profit: $${totalProfitLoss.toFixed(2)}` : 
+                `${period} loss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
 
             const summaryMessages = document.getElementById('summaryMessages');
             const newMessage = document.createElement('p');
