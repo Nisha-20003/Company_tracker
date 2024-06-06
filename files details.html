@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -138,7 +138,7 @@ body {
     </div>
     <div id="pdfContent">
       <div class="Company">
-        <h2>Product Account Details</h2>
+        <h2>Products Account Details</h2>
       </div>
         <table>
             <thead>
@@ -248,7 +248,7 @@ body {
             const totalProfitLoss = totalProfit - totalLoss;
             const message = totalProfitLoss >= 0 ? 
                 `${period} Profit: $${totalProfitLoss.toFixed(2)}` : 
-                `${period} loss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
+                `${period} Loss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
 
             const summaryMessages = document.getElementById('summaryMessages');
             const newMessage = document.createElement('p');
@@ -304,4 +304,4 @@ body {
 });
     </script>
 </body>
-</html>
+</html> 
