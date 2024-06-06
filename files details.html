@@ -209,29 +209,29 @@ body {
             products.forEach(product => {
                 const purchaseDate = new Date(product.purchaseDate);
                 switch (period) {
-                    case 'Daily':
+                    case 'daily':
                         if (purchaseDate.toDateString() === now.toDateString()) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'Weekly':
+                    case 'weekly':
                         const oneWeekAgo = new Date();
                         oneWeekAgo.setDate(now.getDate() - 7);
                         if (purchaseDate >= oneWeekAgo && purchaseDate <= now) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'Monthly':
+                    case 'monthly':
                         if (purchaseDate.getMonth() === now.getMonth() && purchaseDate.getFullYear() === now.getFullYear()) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'Yearly':
+                    case 'yearly':
                         if (purchaseDate.getFullYear() === now.getFullYear()) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'Total':
+                    case 'total':
                         filteredProducts.push(product);
                         break;
                 }
@@ -248,7 +248,7 @@ body {
             const totalProfitLoss = totalProfit - totalLoss;
             const message = totalProfitLoss >= 0 ? 
                 `${period} Profit: $${totalProfitLoss.toFixed(2)}` : 
-                `${period} Poss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
+                `${period} loss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
 
             const summaryMessages = document.getElementById('summaryMessages');
             const newMessage = document.createElement('p');
@@ -262,19 +262,19 @@ body {
         };
 
         document.getElementById('totalProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('total');
+            toggleSummaryMessage('Total');
         });
         document.getElementById('dailyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('daily');
+            toggleSummaryMessage('Daily');
         });
         document.getElementById('weeklyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('weekly');
+            toggleSummaryMessage('Weekly');
         });
         document.getElementById('monthlyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('monthly');
+            toggleSummaryMessage('Monthly');
         });
         document.getElementById('yearlyProfitButton').addEventListener('click', () => {
-            toggleSummaryMessage('yearly');
+            toggleSummaryMessage('Yearly');
         });
  document.getElementById('savePdfButton').addEventListener('click', () => {
     const element = document.getElementById('pdfContent');
