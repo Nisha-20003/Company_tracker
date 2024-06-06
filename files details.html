@@ -209,29 +209,29 @@ body {
             products.forEach(product => {
                 const purchaseDate = new Date(product.purchaseDate);
                 switch (period) {
-                    case 'daily':
+                    case 'Daily':
                         if (purchaseDate.toDateString() === now.toDateString()) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'weekly':
+                    case 'Weekly':
                         const oneWeekAgo = new Date();
                         oneWeekAgo.setDate(now.getDate() - 7);
                         if (purchaseDate >= oneWeekAgo && purchaseDate <= now) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'monthly':
+                    case 'Monthly':
                         if (purchaseDate.getMonth() === now.getMonth() && purchaseDate.getFullYear() === now.getFullYear()) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'yearly':
+                    case 'Yearly':
                         if (purchaseDate.getFullYear() === now.getFullYear()) {
                             filteredProducts.push(product);
                         }
                         break;
-                    case 'total':
+                    case 'Total':
                         filteredProducts.push(product);
                         break;
                 }
@@ -247,8 +247,8 @@ body {
 
             const totalProfitLoss = totalProfit - totalLoss;
             const message = totalProfitLoss >= 0 ? 
-                `${period} profit: $${totalProfitLoss.toFixed(2)}` : 
-                `${period} loss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
+                `${period} Profit: $${totalProfitLoss.toFixed(2)}` : 
+                `${period} Poss: $${Math.abs(totalProfitLoss).toFixed(2)}`;
 
             const summaryMessages = document.getElementById('summaryMessages');
             const newMessage = document.createElement('p');
