@@ -27,7 +27,7 @@ body {
 .header img {
     max-width: 100px;
     height: auto;
-    border-radius: 50px;
+    border-radius: 100px;
 }
 
 h1, h2 {
@@ -264,4 +264,4 @@ footer p {
     footer p {
         font-size: 11px;
     }
-}
+} 
