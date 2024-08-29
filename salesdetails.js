@@ -7,6 +7,9 @@ function renderProducts() {
 
     products.forEach((product, index) => {
         const listItem = document.createElement('li');
+        const transportationHTML = product.transportation !== 0 
+            ? `<strong>Transportation:</strong> ${product.transportation}<br>` 
+            : '';
         listItem.innerHTML = `
             <div>
                 <strong>Item:</strong> ${product.item}<br>
@@ -14,6 +17,8 @@ function renderProducts() {
                 <strong>Quantity:</strong> ${product.quantity}<br>
                 <strong>Cost Price:</strong> ${product.costPrice}<br>
                 <strong>Selling Price:</strong> ${product.sellingPrice}<br>
+                <div id="trans">
+               ${transportationHTML}
                 <div class="action">
                     <button onclick="editItem(${index})">Edit</button>
                     <button onclick="deleteItem(${index})">Delete</button>
@@ -41,7 +46,7 @@ function calculateSummary() {
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const startOfYear = new Date(today.getFullYear(), 0, 1);
 products.forEach(product => {
-        const profit = (product.sellingPrice - product.costPrice) * product.quantity;
+        const profit = ((product.sellingPrice - product.costPrice) * product.quantity) - product.transportation;
         profitLoss += profit;
 const purchaseDate = new Date(product.purchaseDate);
         if (purchaseDate >= today) {
@@ -78,6 +83,7 @@ function editItem(index) {
     document.getElementById('quantity').value = product.quantity;
     document.getElementById('costPrice').value = product.costPrice;
     document.getElementById('sellingPrice').value = product.sellingPrice;
+document.getElementById('transportation').value = product.transportation;
 
     editingIndex = index;
     // Set the editing index to the current index
@@ -92,7 +98,11 @@ function addItem() {
     const quantity = parseFloat(document.getElementById('quantity').value);
     const costPrice = parseFloat(document.getElementById('costPrice').value);
     const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
-
+    let transportation = parseFloat(document.getElementById('transportation').value);
+    
+if (isNaN(transportation)) {
+        transportation = 0;
+    }
     const now = new Date();
     const inputDate = new Date(purchaseDate);
     if (inputDate > now) {
@@ -100,8 +110,8 @@ function addItem() {
         return;
     }
 
-    if (!item || !purchaseDate || isNaN(quantity) || isNaN(costPrice) || isNaN(sellingPrice)) {
-        alert('Please fill in all fields');
+    if (!item || !purchaseDate || isNaN(quantity) || isNaN(costPrice) || isNaN(sellingPrice) && isNaN(transportation)){
+        alert('Please fill in required fields');
         return;
     }
  const product = {
@@ -109,8 +119,11 @@ function addItem() {
         purchaseDate: purchaseDate,
         quantity: quantity,
         costPrice: costPrice,
-        sellingPrice: sellingPrice
+        sellingPrice: sellingPrice,
+        transportation: transportation
     };
+       
+
 if (editingIndex !== null) {
         products[editingIndex] = product; // Update the existing product
         editingIndex = null; // Reset editing index
@@ -118,13 +131,26 @@ if (editingIndex !== null) {
         products.push(product); // Add a new product
     }
 renderProducts();
+         
 // Clear input fields after adding item or updating item
     document.getElementById('item').value = '';
     document.getElementById('purchaseDate').value = '';
     document.getElementById('quantity').value = '';
     document.getElementById('costPrice').value = '';
     document.getElementById('sellingPrice').value = '';
+    document.getElementById('transportation').value = '';
 }
+// Define the trans function
+    let trans = () => {
+        let div = document.createElement("div");
+        div.innerHTML = "This is optional";
+        div.id = "divContent";
+        let cont = document.getElementById("cont");
+        cont.appendChild(div);
+    }
+
+    // Attach the event listener to the input field
+    document.getElementById("transportation").addEventListener("click", trans, { once: true });
 // Handle date input
 function handleDateInput() {
     const inputDate = new Date(document.getElementById('purchaseDate').value);
@@ -211,4 +237,4 @@ function handleDateInputChange(event) {
     // Perform any actions you want to take when the date input changes
     console.log('Selected date:', selectedDate);
     // You can add more code here to handle the selected date
-}       
+}           
