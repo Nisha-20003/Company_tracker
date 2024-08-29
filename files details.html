@@ -97,16 +97,19 @@
         }
         @media only screen and (max-width: 414px) {
             table {
-                font-size: 80%;
+                font-size: 40%;
             }
             th, td {
-                padding: 6px;
+                padding: 3px;
             }
             h1, h2 {
-                font-size: 24px;
+                font-size: 25px;
             }
             p {
-                font-size: 120%;
+                font-size: 10px;
+            }
+            button {
+                width: 250px;
             }
         }
         @media only screen and (min-width: 768px) and (max-width: 1024px) {
@@ -155,7 +158,9 @@
                     <th>Quantity</th>
                     <th>Cost Price</th>
                     <th>Selling Price</th>
+                    <th>Transportation</th>
                     <th>Profit</th>
+                    
                 </tr>
             </thead>
             <tbody id="productList"></tbody>
@@ -167,7 +172,7 @@
         const products = JSON.parse(localStorage.getItem('products') || '[]');
 
         function calculateProfit(product) {
-            return (product.sellingPrice - product.costPrice) * product.quantity;
+            return ((product.sellingPrice - product.costPrice) * product.quantity) - product.transportation;
         }
 
         function populateProductsSummary(filteredProducts = products) {
@@ -189,17 +194,18 @@
                     <td>${product.quantity}</td>
                     <td>$${product.costPrice.toFixed(2)}</td>
                     <td>$${product.sellingPrice.toFixed(2)}</td>
+                    <td>$${product.transportation.toFixed(2)}</td>
                     <td>$${profit.toFixed(2)}</td>
                 `;
                 productList.appendChild(row);
             });
 
             const totalProfitRow = document.createElement('tr');
-            totalProfitRow.innerHTML = `<td colspan="5">Total Profit</td><td>$${totalProfit.toFixed(2)}</td>`;
+            totalProfitRow.innerHTML = `<td colspan="6">Total Profit</td><td>$${totalProfit.toFixed(2)}</td>`;
             productList.appendChild(totalProfitRow);
 
             const totalLossRow = document.createElement('tr');
-            totalLossRow.innerHTML = `<td colspan="5">Total Loss</td><td>$${totalLoss.toFixed(2)}</td>`;
+            totalLossRow.innerHTML = `<td colspan="6">Total Loss</td><td>$${totalLoss.toFixed(2)}</td>`;
             productList.appendChild(totalLossRow);
         }
 
