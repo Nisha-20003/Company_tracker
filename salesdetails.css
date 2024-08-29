@@ -54,6 +54,9 @@ h1, h2 {
 .input-section input {
     margin-bottom: 10px;
 }
+.hide{
+    display: none;
+}
 
 button {
     background-color: #007bff;
@@ -78,6 +81,22 @@ button:hover {
 .products h2 {
     margin-bottom: 10px;
 }
+#divContent{
+    animation: boo 2s ease-in forwards;
+    
+}
+@keyframes boo{
+    from{
+        color: black;
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to{
+        color: #a17728;
+        transform: translateX(5px);
+        opacity: 1;
+    }
+} 
 
 .products ul {
     list-style-type: none;
