@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Company Account</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,10 +43,11 @@
             background-color: #4CAF50;
             color: white;
             border: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 1s ease;
         }
         .profit-button:hover, .sales-button:hover {
-            background-color: #45a049;
+            background-color: black;
+            color: white;
         }
         #savePdfButton {
             display: block;
@@ -59,10 +59,11 @@
             background-color: #2196F3;
             color: white;
             border: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 1s ease;
         }
         #savePdfButton:hover {
-            background-color: #0b7dda;
+            background-color: black;
+            color: white;
         }
         @media only screen and (max-width: 600px) {
             table {
@@ -106,11 +107,20 @@
             h1, h2 {
                 font-size: 25px;
             }
+            .button-container{
+                background-color: #444;
+                width: 50%;
+                border-radius: 20px;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                
+            }
             p {
                 font-size: 10px;
             }
             button {
-                width: 250px;
+                width: 150px;
             }
         }
         @media only screen and (min-width: 768px) and (max-width: 1024px) {
@@ -352,10 +362,10 @@
                 margin: 0.5,
                 filename: 'company_account.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
+                html2canvas: { scale: 3 },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                 html2pdf: {
-                    html2canvas: { scale: 2 },
+                    html2canvas: { scale: 3 },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                     margin: 0.5,
                     filename: 'company_account.pdf',
@@ -368,3 +378,4 @@
     </script>
 </body>
 </html>  
+ 
