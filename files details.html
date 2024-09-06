@@ -180,8 +180,7 @@
         </table>
         <div id="summaryMessages"></div>
     </div>
-    <button id="savePdfButton">Save as PDF</button>
-     <button onclick="window.print()" >Print Document</button>
+     <button id="savePdfButton" onclick="window.print()" >Print Document</button>
     <script>
         const products = JSON.parse(localStorage.getItem('products') || '[]');
 
@@ -357,26 +356,6 @@
         });
         document.getElementById('yearlySalesButton').addEventListener('click', () => {
             filterSales('Yearly');
-        });
-
-        document.getElementById('savePdfButton').addEventListener('click', () => {
-            const element = document.getElementById('pdfContent');
-            const opt = {
-                margin: 0.5,
-                filename: 'company_account.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 3 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                html2pdf: {
-                    html2canvas: { scale: 3 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-                    margin: 0.5,
-                    filename: 'company_account.pdf',
-                    pagebreak: { mode: 'avoid-all', before: '#pdfContent' }
-                }
-            };
-
-            html2pdf().from(element).set(opt).save();
         });
     </script>
 </body>
